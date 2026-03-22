@@ -39,10 +39,10 @@
       # `nixosConfigurations` is a special output name recognized by `nixos-rebuild`.
       # Using this, you can do `nixos-rebuild switch --flake /path/to/flake/directory#servername`
       # or even `nixos-rebuild switch --flake github:owner/repo#servername` (or git+https://customgitserver.org/owner/repo#server)
-      nixosConfigurations.clestialserver = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.celestialserver = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux"; # or your target system
         modules = [
-          ./configuration.nix
+          ./celestialserver/configuration.nix
         ];
         # specialArgs is optional, but I like passing all flake inputs here.
         # specialArgs can be referenced in nixos modules at the top of each file, the same way you refer to `pkgs`: `{ pkgs, inputs, ... }:``
