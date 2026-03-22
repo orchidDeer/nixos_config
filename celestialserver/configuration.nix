@@ -75,6 +75,10 @@
     packages = with pkgs; [ ];
   };
 
+  environment.interactiveShellInit = ''
+    source ${pkgs.git}/share/bash-completion/completions/git-prompt.sh
+  '';
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
