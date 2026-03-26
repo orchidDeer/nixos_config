@@ -16,6 +16,7 @@
 
   imports = [
     ../bash.nix
+    ./bash.nix
   ];
 
   programs.zed-editor = {
