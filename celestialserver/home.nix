@@ -8,6 +8,8 @@
   home.packages = with pkgs; [
     btop
     stress-ng
+    pciutils
+    hashcat
   ];
 
   imports = [

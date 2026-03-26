@@ -10,6 +10,7 @@
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.default
     ./networking.nix
+    ./nvidia.nix
   ];
 
   home-manager.useUserPackages = true;

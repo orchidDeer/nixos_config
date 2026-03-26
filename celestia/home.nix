@@ -12,6 +12,9 @@
     zed-editor
     prismlauncher
     prusa-slicer
+
+    nil
+    nixd
   ];
 
   imports = [
