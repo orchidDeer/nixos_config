@@ -1,4 +1,4 @@
-# Flakes are pretty much programming language packages for nix.
+# Flakes are pretty much programming language packages for nix.d
 # They have inputs (other flakes they depend on),
 # and outputs (an attribute set that depends on the inputs,
 # with special names for specific functionality like exposing nixos configurations)

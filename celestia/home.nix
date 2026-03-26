@@ -11,16 +11,7 @@
     legcord
     zed-editor
     prismlauncher
-
-    gcc
-    gnumake
-    nil
-    rust-analyzer
-    cargo
-    rustc
-    rustfmt
-    clippy
-    nixd
+    prusa-slicer
   ];
 
   imports = [
