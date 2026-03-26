@@ -9,6 +9,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.default
+    ./networking.nix
   ];
 
   home-manager.useUserPackages = true;
@@ -19,14 +20,6 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "celestialserver"; # Define your hostname.
-  networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
-  networking.wireless.networks = {
-    "Celestial-WLAN" = {
-      psk = "celestial bodies meaning beautiful eyes";
-    };
-  };
 
   nix.settings.trusted-users = [
     "root"
