@@ -26,6 +26,12 @@
     "@wheel"
   ];
 
+  fileSystems."/mnt/sdd" = {
+    device = "/dev/disk/by-uuid/F8247A272479E950";
+    fsType = "ntfs";
+    options = [ "x-systemd.automount" "noauto" ];
+  };
+
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
