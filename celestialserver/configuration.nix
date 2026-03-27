@@ -22,15 +22,42 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  virtualisation.docker = {
+    enable = true;
+  };
+
   nix.settings.trusted-users = [
     "root"
     "@wheel"
   ];
 
-  fileSystems."/mnt/sdd" = {
+  # For usb hdd
+  boot.initrd.availableKernelModules = [
+    "usb_storage"
+    "uas"
+    "xhci_pci"
+    "sd_mod"
+  ];
+
+  fileSystems."/mnt/ssd" = {
     device = "/dev/disk/by-uuid/F8247A272479E950";
     fsType = "ntfs";
-    options = [ "x-systemd.automount" "noauto" ];
+    options = [
+      "uid=1000"
+      "gid=100"
+      "umask=0007"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
+  fileSystems."/mnt/hdd" = {
+    device = "/dev/disk/by-uuid/2a73df13-1d8d-4d69-b61d-b19ea51fb095";
+    fsType = "ext4";
+    options = [
+      "nofail"
+      "rw"
+    ];
   };
 
   # Set your time zone.
@@ -61,9 +88,11 @@
   users.users.juna = {
     isNormalUser = true;
     description = "juna";
+    uid = 1000;
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
     ];
     packages = with pkgs; [ ];
   };
