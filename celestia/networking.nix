@@ -9,8 +9,11 @@
       connection = {
         id = "Direct-Server-Link";
         type = "ethernet";
-        interface-name = "eth0";
         autoconnect = true;
+      };
+      match = {
+        # Bind this profile to a specific hardware MAC address
+        mac-address = "9c:bf:0d:00:7e:63";
       };
       ipv4 = {
         method = "manual";
