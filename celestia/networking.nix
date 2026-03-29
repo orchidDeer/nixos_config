@@ -17,7 +17,7 @@
       };
       ipv4 = {
         method = "manual";
-        addresses = "192.168.10.2/16";
+        address1 = "192.168.10.150/24";
         routes = "192.168.2.111/24,192.168.10.1";
       };
       ipv6.method = "disabled";

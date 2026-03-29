@@ -24,19 +24,17 @@
 
   virtualisation.docker = {
     enable = true;
+    daemon.settings = {
+      ipv6 = true;
+      # Required to allow Docker to manage IPv6 firewall rules correctly
+      "experimental" = true;
+      "ip6tables" = true;
+    };
   };
 
   nix.settings.trusted-users = [
     "root"
     "@wheel"
-  ];
-
-  # For usb hdd
-  boot.initrd.availableKernelModules = [
-    "usb_storage"
-    "uas"
-    "xhci_pci"
-    "sd_mod"
   ];
 
   fileSystems."/mnt/ssd" = {
@@ -48,15 +46,6 @@
       "umask=0007"
       "x-systemd.automount"
       "noauto"
-    ];
-  };
-
-  fileSystems."/mnt/hdd" = {
-    device = "/dev/disk/by-uuid/2a73df13-1d8d-4d69-b61d-b19ea51fb095";
-    fsType = "ext4";
-    options = [
-      "nofail"
-      "rw"
     ];
   };
 
@@ -108,8 +97,12 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    #  wget
+    wget
+    docker-compose
+    git
   ];
+
+  hardware.nvidia-container-toolkit.enable = true;
 
   # List services that you want to enable:
 
