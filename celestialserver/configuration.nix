@@ -11,6 +11,8 @@
     inputs.home-manager.nixosModules.default
     ./networking.nix
     ./nvidia.nix
+    ./sway.nix
+    ./sunshine.nix
   ];
 
   home-manager.useUserPackages = true;
@@ -82,6 +84,10 @@
       "networkmanager"
       "wheel"
       "docker"
+      "video"
+      "input"
+      "render"
+      "seat"
     ];
     packages = with pkgs; [ ];
   };
@@ -108,6 +114,14 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  # Prevent sleep
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

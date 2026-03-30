@@ -2,10 +2,11 @@
 {
   hardware.graphics = {
     enable = true;
+    enable32Bit = true;
   };
 
   services.xserver.videoDrivers = [
-    "amdgpu"
+    #    "amdgpu"
     "nvidia"
   ];
 
@@ -18,11 +19,7 @@
     # Enable this if you have graphical corruption issues or application crashes after waking
     # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
     # of just the bare essentials.
-    powerManagement.enable = true;
-
-    # Fine-grained power management. Turns off GPU when not in use.
-    # Experimental and only works on modern Nvidia GPUs (Turing or newer).
-    powerManagement.finegrained = true;
+    powerManagement.enable = false;
 
     # Use the NVidia open source kernel module (not to be confused with the
     # independent third-party "nouveau" open source driver).
@@ -44,13 +41,13 @@
     prime = {
       amdgpuBusId = "PCI:5:0:0";
       nvidiaBusId = "PCI:1:0:0";
-
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
+      sync.enable = true;
     };
   };
+
+  boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
+
+  nixpkgs.config.cudaSupport = true;
 
   services.xserver.deviceSection = ''
     Option "Coolbits" "28"

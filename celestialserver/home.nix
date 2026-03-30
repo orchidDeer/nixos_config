@@ -10,6 +10,8 @@
     stress-ng
     pciutils
     hashcat
+    libva-utils
+    python3
   ];
 
   imports = [

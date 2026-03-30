@@ -12,9 +12,12 @@
     zed-editor
     prismlauncher
     prusa-slicer
+    jellyfin-desktop
+    moonlight-qt
 
     nil
     nixd
+    python3
   ];
 
   imports = [
