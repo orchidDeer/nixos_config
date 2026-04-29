@@ -11,8 +11,6 @@
     inputs.home-manager.nixosModules.default
     ./networking.nix
     ./nvidia.nix
-    ./sway.nix
-    ./sunshine.nix
   ];
 
   home-manager.useUserPackages = true;
@@ -46,6 +44,15 @@
       "uid=1000"
       "gid=100"
       "umask=0007"
+      "x-systemd.automount"
+      "noauto"
+    ];
+  };
+
+  fileSystems."/mnt/data" = {
+    device = "/dev/disk/by-uuid/eb19c3d7-1888-4255-ba71-0c891f24f3f8";
+    fsType = "ext4";
+    options = [
       "x-systemd.automount"
       "noauto"
     ];
@@ -107,8 +114,6 @@
     docker-compose
     git
   ];
-
-  hardware.nvidia-container-toolkit.enable = true;
 
   # List services that you want to enable:
 

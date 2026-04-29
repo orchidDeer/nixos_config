@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   hardware.graphics = {
     enable = true;
@@ -8,6 +8,14 @@
   services.xserver.videoDrivers = [
     #    "amdgpu"
     "nvidia"
+  ];
+
+  # docker
+  hardware.nvidia-container-toolkit.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
+  environment.systemPackages = with pkgs; [
+    (sunshine.override { cudaSupport = true; })
   ];
 
   hardware.nvidia = {
@@ -27,7 +35,7 @@
     # supported GPUs is at:
     # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
     # Only available from driver 515.43.04+
-    open = false;
+    open = true;
 
     # Enable the Nvidia settings menu,
     # accessible via `nvidia-settings`.
@@ -45,7 +53,15 @@
     };
   };
 
-  boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+  ];
+  boot.initrd.kernelModules = [
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_uvm"
+    "nvidia_drm"
+  ];
 
   nixpkgs.config.cudaSupport = true;
 

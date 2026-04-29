@@ -14,11 +14,16 @@
     prusa-slicer
     jellyfin-desktop
     moonlight-qt
+    steam
+    smartmontools
+    btop
 
     nil
     nixd
     python3
   ];
+
+  programs.direnv.enable = true;
 
   imports = [
     ../bash.nix
@@ -34,6 +39,7 @@
       "html"
       "Material Icon Theme"
       "Everforest Blurred"
+      "git-firefly"
     ];
     userSettings = {
       theme = {

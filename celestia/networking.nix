@@ -19,6 +19,7 @@
         method = "manual";
         address1 = "192.168.10.150/24";
         routes = "192.168.2.111/24,192.168.10.1";
+        never-default = "true";
       };
       ipv6.method = "disabled";
     };

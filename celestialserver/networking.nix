@@ -6,6 +6,7 @@
     "net.ipv6.conf.default.forwarding" = 1;
   };
 
+  networking.networkmanager.enable = false;
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
   networking.wireless.networks = {
     "Celestial-WLAN" = {
