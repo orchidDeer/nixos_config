@@ -13,6 +13,7 @@
     ./nvidia.nix
     ./nextcloud.nix
     ./ssh.nix
+    ./caddy.nix
   ];
 
   home-manager.useUserPackages = true;

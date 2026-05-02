@@ -18,6 +18,7 @@
     smartmontools
     btop
     signal-desktop
+    dig
 
     nil
     nixd
