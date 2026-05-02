@@ -1,0 +1,15 @@
+keys:
+  - &admin_key age1u0d54sw9zjrapnrddavut80x9fy8slnmj8qznuk99p7x3qhtx43suue7y9
+  - &celestia_key age1dp6028g63rg2a7e522ylvk8fnnvxj4z6wufvt5u572jxv5njfsvssvdjjn
+  - &celestialserver_key age1vwgt293s04zz2rud5qt2y3gh3vlznget645xgns9ra0uyluk6vsqtf7r0l
+creation_rules:
+  - path_regex: celestia/[^/]+
+    key_groups:
+      - age:
+          - *admin_key
+          - *celestia_key
+  - path_regex: celestialserver/[^/]+
+    key_groups:
+      - age:
+          - *admin_key
+          - *celestialserver_key

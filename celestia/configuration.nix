@@ -23,6 +23,8 @@
     "flakes"
   ];
 
+  sops.age.keyFile = "/var/lib/sops-nix/keys.txt";
+
   programs.direnv.enable = true;
 
   programs.steam.enable = true;
@@ -97,6 +99,7 @@
     #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     #  wget
     git
+    sops
   ];
 
   environment.interactiveShellInit = ''

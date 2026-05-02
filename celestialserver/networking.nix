@@ -1,4 +1,10 @@
+{ config, ... }:
 {
+  sops.secrets.networking_wlan_pass = {
+    sopsFile = ./networking_wlan_pass;
+    format = "binary";
+  };
+
   networking.hostName = "celestialserver"; # Define your hostname.
   networking.enableIPv6 = true;
   boot.kernel.sysctl = {
@@ -8,9 +14,10 @@
 
   networking.networkmanager.enable = false;
   networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
+  networking.wireless.secretsFile = config.sops.secrets.networking_wlan_pass.path;
   networking.wireless.networks = {
     "Celestial-WLAN" = {
-      psk = "celestial bodies meaning beautiful eyes";
+      pskRaw = "ext:wlanpass";
     };
   };
 

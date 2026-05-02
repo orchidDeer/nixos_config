@@ -15,12 +15,15 @@
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   # outputs is a function taking in the inputs as an attribute set and returning an attribute set with specific attributes
   outputs =
     {
       nixpkgs,
+      sops-nix,
       ...
     }@inputs:
     {
@@ -28,6 +31,7 @@
         system = "x86_64-linux"; # or your target system
         modules = [
           ./celestia/configuration.nix
+          sops-nix.nixosModules.sops
         ];
         # specialArgs is optional, but I like passing all flake inputs here.
         # specialArgs can be referenced in nixos modules at the top of each file, the same way you refer to `pkgs`: `{ pkgs, inputs, ... }:``
@@ -43,6 +47,7 @@
         system = "x86_64-linux"; # or your target system
         modules = [
           ./celestialserver/configuration.nix
+          sops-nix.nixosModules.sops
         ];
         # specialArgs is optional, but I like passing all flake inputs here.
         # specialArgs can be referenced in nixos modules at the top of each file, the same way you refer to `pkgs`: `{ pkgs, inputs, ... }:``

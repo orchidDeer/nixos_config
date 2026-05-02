@@ -11,12 +11,22 @@
     inputs.home-manager.nixosModules.default
     ./networking.nix
     ./nvidia.nix
+    ./nextcloud.nix
+    ./ssh.nix
   ];
 
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
   home-manager.backupFileExtension = "backup";
   home-manager.users.juna = import ./home.nix;
+
+  # flakes
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
+  sops.age.keyFile = "/var/lib/sops-nix/keys.txt";
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -113,12 +123,9 @@
     wget
     docker-compose
     git
+    php
+    sops
   ];
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
 
   # Prevent sleep
   systemd.sleep.extraConfig = ''
