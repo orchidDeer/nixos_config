@@ -17,6 +17,7 @@
     steam
     smartmontools
     btop
+    signal-desktop
 
     nil
     nixd

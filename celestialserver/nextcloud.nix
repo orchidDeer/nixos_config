@@ -5,9 +5,28 @@
     format = "binary";
   };
 
+  fileSystems."/var/lib/nextcloud/data" = {
+    device = "/mnt/data/nextcloud";
+    options = [ "bind" ];
+  };
+
+  systemd.tmpfiles.rules = [
+    "d /mnt/data/nextcloud 0750 nextcloud nextcloud - -"
+  ];
+
+  systemd.services.nextcloud-setup.requires = [ "var-lib-nextcloud-data.mount" ];
+  systemd.services.nextcloud-cron.requires = [ "var-lib-nextcloud-data.mount" ];
+  systemd.services.phpfm-nextcloud.requires = [ "var-lib-nextcloud-data.mount" ];
+  systemd.services.redis-nextcloud.requires = [ "var-lib-nextcloud-data.mount" ];
+  systemd.services.nextcloud-update-apps.requires = [ "var-lib-nextcloud-data.mount" ];
+  systemd.services.nextcloud-update-db.requires = [ "var-lib-nextcloud-data.mount" ];
+
+  users.users.nextcloud.extraGroups = [ "nextcloud" ];
+
   services.nextcloud = {
     enable = true;
     hostName = "localhost";
+
     config = {
       adminpassFile = config.sops.secrets.nextcloud_adminpass.path;
       adminuser = "admin";
