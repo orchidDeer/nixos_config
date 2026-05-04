@@ -19,6 +19,7 @@
     btop
     signal-desktop
     dig
+    obsidian
 
     nil
     nixd

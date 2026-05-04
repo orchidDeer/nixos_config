@@ -35,6 +35,12 @@
         reverse_proxy localhost:8080
       '';
     };
+
+    virtualHosts."immich.orchiddeer.de" = {
+      extraConfig = ''
+        reverse_proxy localhost:2283
+      '';
+    };
   };
 
   networking.firewall.allowedTCPPorts = [
