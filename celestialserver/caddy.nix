@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   services.nginx.virtualHosts."celestialserver.orchiddeer.de" = {
     listen = [
@@ -18,29 +19,19 @@
       '';
     };
 
-    virtualHosts."jellyfin.orchiddeer.de" = {
-      extraConfig = ''
-        reverse_proxy localhost:8096
-      '';
-    };
-
-    virtualHosts."jellyseerr.orchiddeer.de" = {
-      extraConfig = ''
-        reverse_proxy localhost:5055
-      '';
-    };
-
-    virtualHosts."qbit.orchiddeer.de" = {
-      extraConfig = ''
-        reverse_proxy localhost:8080
-      '';
-    };
-
     virtualHosts."immich.orchiddeer.de" = {
       extraConfig = ''
         reverse_proxy localhost:2283
       '';
     };
+
+    virtualHosts."vaultwarden.orchiddeer.de".extraConfig = ''
+      encode zstd gzip
+
+      reverse_proxy :${toString config.services.vaultwarden.config.ROCKET_PORT} {
+          header_up X-Real-IP {remote_host}
+      }
+    '';
   };
 
   networking.firewall.allowedTCPPorts = [

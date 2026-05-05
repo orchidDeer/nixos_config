@@ -20,6 +20,7 @@
     signal-desktop
     dig
     obsidian
+    openssl
 
     nil
     nixd

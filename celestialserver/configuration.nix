@@ -14,6 +14,8 @@
     ./nextcloud.nix
     ./ssh.nix
     ./caddy.nix
+    ./caddy_jellyfin.nix
+    ./vaultwarden.nix
   ];
 
   home-manager.useUserPackages = true;
