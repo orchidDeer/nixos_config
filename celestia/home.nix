@@ -23,7 +23,6 @@
     openssl
     nextcloud-client
     wireguard-tools
-
     nil
     nixd
     python3
