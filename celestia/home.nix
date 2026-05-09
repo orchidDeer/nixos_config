@@ -21,6 +21,8 @@
     dig
     obsidian
     openssl
+    nextcloud-client
+    wireguard-tools
 
     nil
     nixd

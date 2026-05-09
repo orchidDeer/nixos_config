@@ -16,6 +16,8 @@
     ./caddy.nix
     ./caddy_jellyfin.nix
     ./vaultwarden.nix
+    ./proxy_server.nix
+    ./couchdb.nix
   ];
 
   home-manager.useUserPackages = true;

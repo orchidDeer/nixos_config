@@ -19,6 +19,19 @@
       '';
     };
 
+    virtualHosts."couchdb.orchiddeer.de" = {
+      extraConfig = ''
+        handle_path /e=_/* {
+          reverse_proxy localhost:5984
+        }
+
+        handle {
+          respond "" 403
+          header -Server ""
+        }
+      '';
+    };
+
     virtualHosts."immich.orchiddeer.de" = {
       extraConfig = ''
         reverse_proxy localhost:2283

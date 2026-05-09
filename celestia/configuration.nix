@@ -10,6 +10,7 @@
     inputs.home-manager.nixosModules.default
     ./freecad.nix
     ./networking.nix
+    ./proxy_to_celestialserver.nix
   ];
 
   home-manager.useUserPackages = true;
