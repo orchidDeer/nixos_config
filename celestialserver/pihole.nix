@@ -22,7 +22,7 @@
           "9.9.9.9"
           "1.1.1.1"
         ];
-        hosts = [ "192.168.2.111 orchiddeer.de" ];
+        hosts = [ ];
         interface = "all";
         listeningMode = "ALL";
       };
@@ -30,6 +30,9 @@
       misc.dnsmasq_lines = [
         "address=/.orchiddeer.de/192.168.2.111"
         "host-record=orchiddeer.de,192.168.2.111"
+
+        "address=/.orchiddeer.de/100.73.254.48"
+        "host-record=orchiddeer.de,100.73.254.48"
       ];
 
       misc.local_networks = [

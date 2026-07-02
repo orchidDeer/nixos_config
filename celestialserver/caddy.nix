@@ -19,6 +19,12 @@
       '';
     };
 
+    virtualHosts."jellyseerr.orchiddeer.de" = {
+      extraConfig = ''
+        reverse_proxy 127.0.0.1:5055
+      '';
+    };
+
     virtualHosts."nextcloud.orchiddeer.de" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:42633
