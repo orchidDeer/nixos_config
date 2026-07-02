@@ -1,80 +1,75 @@
 { config, ... }:
 {
-  sops.secrets.networking_wlan_pass = {
-    sopsFile = ./networking_wlan_pass;
-    format = "binary";
-  };
-
-  networking.hostName = "celestialserver"; # Define your hostname.
-  networking.enableIPv6 = true;
-  boot.kernel.sysctl = {
-    "net.ipv6.conf.all.forwarding" = 1;
-    "net.ipv6.conf.default.forwarding" = 1;
-  };
-
-  networking.networkmanager.enable = false;
-  networking.wireless.enable = true; # Enables wireless support via wpa_supplicant.
-  networking.wireless.secretsFile = config.sops.secrets.networking_wlan_pass.path;
-  networking.wireless.networks = {
-    "Celestial-WLAN" = {
-      pskRaw = "ext:wlanpass";
-    };
-  };
-
-  networking.interfaces.enp3s0 = {
-    ipv4.addresses = [
-      {
-        address = "192.168.10.1";
-        prefixLength = 24;
-      }
-    ];
-  };
-
-  # Enable DHCP server
-  services.kea.dhcp4 = {
-    enable = true;
-    settings = {
-      interfaces-config = {
-        interfaces = [ "enp3s0" ];
-      };
-      lease-database = {
-        type = "memfile";
-        persist = true;
-        name = "/var/lib/kea/dhcp4.leases";
-      };
-      subnet4 = [
-        {
-          id = 1;
-          subnet = "192.168.10.0/24";
-          pools = [ { pool = "192.168.10.100 - 192.168.10.200"; } ];
-          option-data = [
-            {
-              name = "routers";
-              data = "192.168.10.1";
-            }
-          ];
-        }
+  systemd.services.wpa_supplicant = {
+    serviceConfig = {
+      # Append the sops secret path to the existing systemd sandbox paths
+      ReadWritePaths = [
+        config.sops.secrets.networking_wlan_pass.path
       ];
     };
   };
 
-  networking.firewall.allowedUDPPorts = [ 67 ];
-
-  networking.localCommands = ''
-    ip link set enp3s0 up
-  '';
-
-  networking.firewall.allowedTCPPorts = [ 8080 ];
-
-  # Force the name to stay the same based on the MAC address
-  services.udev.extraRules = ''
-    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="<9c:6b:00:03:dc:d3>", NAME="eth-direct"
-  '';
-
-  boot.kernel.sysctl = {
-    "net.ipv4.conf.all.rp_filter" = "0"; # Disable reverse path filtering
-    "net.ipv4.conf.default.rp_filter" = "0"; # Disable reverse path filtering for default interface
+  sops.secrets.networking_wlan_pass = {
+    sopsFile = ./networking_wlan_pass;
+    format = "binary";
+    group = "wpa_supplicant";
+    mode = "0440";
   };
 
-  networking.firewall.trustedInterfaces = [ "enp3s0" ];
+  networking = {
+    hostName = "celestialserver";
+
+    enableIPv6 = true;
+
+    networkmanager.enable = false;
+    wireless = {
+      enable = true;
+      secretsFile = config.sops.secrets.networking_wlan_pass.path;
+      interfaces = [ "wlp4s0" ];
+      networks = {
+        "Celestial-WLAN" = {
+          pskRaw = "ext:wlanpass";
+        };
+      };
+    };
+
+    # Let kernel decide routes normally
+    useDHCP = false;
+    interfaces.wlp4s0.useDHCP = true;
+
+    nameservers = [
+      "1.1.1.1"
+      "9.9.9.9"
+    ];
+  };
+
+  networking.interfaces.wlp4s0.ipv4.addresses = [
+    {
+      address = "192.168.2.111";
+      prefixLength = 16;
+    }
+  ];
+
+  networking.firewall = {
+    enable = true;
+
+    allowedUDPPorts = [
+      53
+      41641
+    ];
+    allowedTCPPorts = [ 53 ];
+
+    checkReversePath = "loose";
+
+    trustedInterfaces = [
+      "tailscale0"
+    ];
+  };
+
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+
+    "net.ipv4.conf.all.rp_filter" = 2;
+    "net.ipv4.conf.default.rp_filter" = 2;
+  };
 }

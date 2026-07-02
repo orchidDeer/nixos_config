@@ -18,6 +18,7 @@
     ./vaultwarden.nix
     ./couchdb.nix
     ./tailscale.nix
+    ./pihole.nix
   ];
 
   home-manager.useUserPackages = true;
@@ -120,6 +121,7 @@
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+  hardware.enableAllFirmware = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -130,15 +132,9 @@
     git
     php
     sops
+    iw
+    wirelesstools
   ];
-
-  # Prevent sleep
-  systemd.sleep.extraConfig = ''
-    AllowSuspend=no
-    AllowHibernation=no
-    AllowHybridSleep=no
-    AllowSuspendThenHibernate=no
-  '';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

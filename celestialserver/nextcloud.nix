@@ -8,6 +8,7 @@
   fileSystems."/var/lib/nextcloud/data" = {
     device = "/mnt/data/nextcloud";
     options = [ "bind" ];
+    fsType = "ext4";
   };
 
   systemd.tmpfiles.rules = [

@@ -13,6 +13,8 @@
     libva-utils
     python3
     deno
+    dig
+    tcpdump
   ];
 
   imports = [

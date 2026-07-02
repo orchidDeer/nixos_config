@@ -26,6 +26,10 @@
     nil
     nixd
     python3
+    darktable
+    appimage-run
+    openssl
+    pkg-config
   ];
 
   programs.direnv.enable = true;
