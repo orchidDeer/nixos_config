@@ -1,6 +1,6 @@
 { config, ... }:
 {
-  services.nginx.virtualHosts."celestialserver.orchiddeer.de" = {
+  services.nginx.virtualHosts."celestialserver.localdeer" = {
     listen = [
       {
         addr = "127.0.0.1"; # Changed from "localhost" for strict IPv4 routing
@@ -13,30 +13,20 @@
     enable = true;
     email = "caddy@orchiddeer.de";
 
-    virtualHosts."qbit.orchiddeer.de" = {
-      extraConfig = ''
-        reverse_proxy 127.0.0.1:8080
-      '';
-    };
-
-    virtualHosts."jellyseerr.orchiddeer.de" = {
-      extraConfig = ''
-        reverse_proxy 127.0.0.1:5055
-      '';
-    };
-
-    virtualHosts."nextcloud.orchiddeer.de" = {
+    virtualHosts."nextcloud.localdeer" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:42633
+        tls internal
       '';
     };
 
-    virtualHosts."couchdb.orchiddeer.de" = {
+    virtualHosts."couchdb.localdeer" = {
       extraConfig = ''
         handle_path /e=_/* {
           reverse_proxy 127.0.0.1:5984
         }
 
+        tls internal
         handle {
           respond "" 403
           header -Server ""
@@ -44,25 +34,33 @@
       '';
     };
 
-    virtualHosts."immich.orchiddeer.de" = {
+    virtualHosts."immich.localdeer" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:2283
+        tls internal
       '';
     };
 
-    virtualHosts."pihole.orchiddeer.de" = {
+    virtualHosts."pihole.localdeer" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:3254
+        tls internal
       '';
     };
 
-    virtualHosts."vaultwarden.orchiddeer.de".extraConfig = ''
+    virtualHosts."vaultwarden.localdeer".extraConfig = ''
       encode zstd gzip
 
       reverse_proxy 127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT} {
           header_up X-Real-IP {remote_host}
       }
+      tls internal
     '';
+  };
+
+  environment.variables = {
+    SSL_CERT_FILE = "/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt";
+    NIX_SSL_CERT_FILE = "/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt";
   };
 
   # Open standard web ports globally for LAN and Tailscale

@@ -28,11 +28,11 @@
       };
 
       misc.dnsmasq_lines = [
-        "address=/.orchiddeer.de/192.168.2.111"
-        "host-record=orchiddeer.de,192.168.2.111"
+        "address=/.localdeer/192.168.2.111"
+        "host-record=localdeer,192.168.2.111"
 
-        "address=/.orchiddeer.de/100.73.254.48"
-        "host-record=orchiddeer.de,100.73.254.48"
+        "address=/.localdeer/100.73.254.48"
+        "host-record=localdeer,100.73.254.48"
       ];
 
       misc.local_networks = [
