@@ -26,7 +26,7 @@
 
   services.nextcloud = {
     enable = true;
-    hostName = "celestialserver.orchiddeer.de";
+    hostName = "celestialserver.localdeer";
 
     config = {
       adminpassFile = config.sops.secrets.nextcloud_adminpass.path;
@@ -51,7 +51,7 @@
       trusted_domains = [
         "192.168.2.111"
         "192.168.10.1"
-        "nextcloud.orchiddeer.de"
+        "nextcloud.localdeer"
       ];
     };
   };
