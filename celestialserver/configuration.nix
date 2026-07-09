@@ -19,6 +19,7 @@
     ./couchdb.nix
     ./tailscale.nix
     ./pihole.nix
+    ./actual_budget.nix
   ];
 
   home-manager.useUserPackages = true;

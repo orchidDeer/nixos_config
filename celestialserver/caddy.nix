@@ -48,6 +48,16 @@
       '';
     };
 
+    virtualHosts."budget.localdeer".extraConfig = ''
+      reverse_proxy 127.0.0.1:5006
+
+      handle /enable-actual-callback* {
+        reverse_proxy 127.0.0.1:3000
+      }
+
+      tls internal
+    '';
+
     virtualHosts."vaultwarden.localdeer".extraConfig = ''
       encode zstd gzip
 
