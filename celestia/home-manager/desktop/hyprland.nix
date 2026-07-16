@@ -48,6 +48,36 @@
             (lib.generators.mkLuaInline "hl.dsp.window.close()")
           ];
         }
+        {
+          _args = [
+            "SUPER+right"
+            (lib.generators.mkLuaInline ''hl.dsp.focus({ workspace = "r+1" })'')
+          ];
+        }
+        {
+          _args = [
+            "SUPER+left"
+            (lib.generators.mkLuaInline ''hl.dsp.focus({ workspace = "r-1" })'')
+          ];
+        }
+        {
+          _args = [
+            "SUPER+SHIFT+right"
+            (lib.generators.mkLuaInline ''hl.dsp.window.move({ workspace = "r+1" })'')
+          ];
+        }
+        {
+          _args = [
+            "SUPER+SHIFT+left"
+            (lib.generators.mkLuaInline ''hl.dsp.window.move({ workspace = "r-1" })'')
+          ];
+        }
+        {
+          _args = [
+            "SUPER+SHIFT+r"
+            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("hyprctl reload")'')
+          ];
+        }
       ];
     };
   };
