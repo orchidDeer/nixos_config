@@ -37,6 +37,16 @@
     useDHCP = false;
     interfaces.wlp4s0.useDHCP = true;
 
+    interfaces.enp3s0 = {
+      useDHCP = true;
+      ipv4.addresses = [
+        {
+          address = "200.0.0.1";
+          prefixLength = 24;
+        }
+      ];
+    };
+
     nameservers = [
       "1.1.1.1"
       "9.9.9.9"
@@ -49,6 +59,28 @@
       prefixLength = 16;
     }
   ];
+
+  # Enable DHCP server
+  services.kea.dhcp4 = {
+    enable = true;
+    settings = {
+      interfaces-config = {
+        interfaces = [ "enp3s0" ];
+      };
+      lease-database = {
+        type = "memfile";
+        persist = true;
+        name = "/var/lib/kea/dhcp4.leases";
+      };
+      subnet4 = [
+        {
+          id = 1;
+          subnet = "200.0.0.0/24";
+          pools = [ { pool = "200.0.0.100 - 200.0.0.200"; } ];
+        }
+      ];
+    };
+  };
 
   networking.firewall = {
     enable = true;

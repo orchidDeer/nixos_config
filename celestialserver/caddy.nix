@@ -48,6 +48,13 @@
       '';
     };
 
+    virtualHosts."sunshine.localdeer" = {
+      extraConfig = ''
+        reverse_proxy 127.0.0.1:47990
+        tls internal
+      '';
+    };
+
     virtualHosts."budget.localdeer".extraConfig = ''
       reverse_proxy 127.0.0.1:5006
 
