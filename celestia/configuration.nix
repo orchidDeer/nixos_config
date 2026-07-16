@@ -100,6 +100,8 @@
     "flakes"
   ];
 
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+
   # Fix for __git_ps1 command not found
   environment.interactiveShellInit = ''
     source ${pkgs.git}/share/bash-completion/completions/git-prompt.sh

@@ -34,6 +34,7 @@
     nil
     nixd
     librewolf
+    nautilus
   ];
 
   programs.direnv.enable = true;

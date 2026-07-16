@@ -1,6 +1,6 @@
 keys:
-  - &admin_key age1u0d54sw9zjrapnrddavut80x9fy8slnmj8qznuk99p7x3qhtx43suue7y9
-  - &celestia_key age1dp6028g63rg2a7e522ylvk8fnnvxj4z6wufvt5u572jxv5njfsvssvdjjn
+  - &admin_key age19nfhz30pwa0frjmmg05asge4659t48suvw023wvf9wkulhwclqlqy6wuld
+  - &celestia_key age1r4mta98wtaacaf92m6nap3stj3ds0vu9gqxff0572kls6m8mjguq4fr565
   - &celestialserver_key age1vwgt293s04zz2rud5qt2y3gh3vlznget645xgns9ra0uyluk6vsqtf7r0l
 creation_rules:
   - path_regex: celestia/[^/]+
