@@ -8,6 +8,7 @@
     ./bash.nix
     ./zeditor.nix
     ./desktop/desktop.nix
+    ./librewolf.nix
   ];
 
   home.username = "juna";
@@ -33,8 +34,10 @@
     nextcloud-client
     nil
     nixd
-    librewolf
+    nixfmt
+    firefox
     nautilus
+    nwg-look
   ];
 
   programs.direnv.enable = true;

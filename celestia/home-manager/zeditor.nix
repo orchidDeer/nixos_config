@@ -22,6 +22,20 @@
       ui_font_size = 16;
       buffer_font_size = 15;
 
+      languages = {
+        Nix = {
+          language_servers = [
+            "nil"
+            "!nixd"
+          ];
+          formatter = {
+            external = {
+              command = "nixfmt";
+            };
+          };
+        };
+      };
+
       lsp = {
         rust-analyzer = {
           binary = {

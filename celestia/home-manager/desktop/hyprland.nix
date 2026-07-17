@@ -1,9 +1,23 @@
 { lib, ... }:
+let
+  lua = lib.generators.mkLuaInline;
+
+  bind = key: action: {
+    _args = [
+      key
+      (lua action)
+    ];
+  };
+
+  exec = cmd: ''hl.dsp.exec_cmd("${cmd}")'';
+  focusWs = ws: ''hl.dsp.focus({ workspace = "${ws}" })'';
+  moveWs = ws: ''hl.dsp.window.move({ workspace = "${ws}" })'';
+in
 {
   wayland.windowManager.hyprland = {
     enable = true;
     configType = "lua";
-
+    systemd.variables = [ "--all" ];
     settings = {
       config = {
         general = {
@@ -15,69 +29,22 @@
           rounding = 10;
         };
       };
-
       monitor = {
         output = "";
         mode = "preferred";
         position = "auto";
         scale = 1;
       };
-
       bind = [
-        {
-          _args = [
-            "SUPER+Q"
-            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("kitty")'')
-          ];
-        }
-        {
-          _args = [
-            "SUPER+C"
-            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("pkill waybar || waybar")'')
-          ];
-        }
-        {
-          _args = [
-            "SUPER+P"
-            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("walker")'')
-          ];
-        }
-        {
-          _args = [
-            "SUPER+E"
-            (lib.generators.mkLuaInline "hl.dsp.window.close()")
-          ];
-        }
-        {
-          _args = [
-            "SUPER+right"
-            (lib.generators.mkLuaInline ''hl.dsp.focus({ workspace = "r+1" })'')
-          ];
-        }
-        {
-          _args = [
-            "SUPER+left"
-            (lib.generators.mkLuaInline ''hl.dsp.focus({ workspace = "r-1" })'')
-          ];
-        }
-        {
-          _args = [
-            "SUPER+SHIFT+right"
-            (lib.generators.mkLuaInline ''hl.dsp.window.move({ workspace = "r+1" })'')
-          ];
-        }
-        {
-          _args = [
-            "SUPER+SHIFT+left"
-            (lib.generators.mkLuaInline ''hl.dsp.window.move({ workspace = "r-1" })'')
-          ];
-        }
-        {
-          _args = [
-            "SUPER+SHIFT+r"
-            (lib.generators.mkLuaInline ''hl.dsp.exec_cmd("hyprctl reload")'')
-          ];
-        }
+        (bind "SUPER+T" (exec "kitty"))
+        (bind "SUPER+C" (exec "pkill waybar || waybar"))
+        (bind "SUPER+P" (exec "walker"))
+        (bind "SUPER+Q" "hl.dsp.window.close()")
+        (bind "SUPER+right" (focusWs "r+1"))
+        (bind "SUPER+left" (focusWs "r-1"))
+        (bind "SUPER+SHIFT+right" (moveWs "r+1"))
+        (bind "SUPER+SHIFT+left" (moveWs "r-1"))
+        (bind "SUPER+SHIFT+r" (exec "hyprctl reload"))
       ];
     };
   };

@@ -4,9 +4,7 @@
 
 {
   inputs,
-  config,
   pkgs,
-  walker,
   ...
 }:
 
@@ -16,6 +14,8 @@
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.default
     ./hyprland.nix
+    ./tailscale.nix
+    ./networking.nix
   ];
 
   # Bootloader.
@@ -24,12 +24,6 @@
 
   boot.initrd.luks.devices."luks-a7bd9db4-4f79-4b84-a32b-effa485bd4e0".device =
     "/dev/disk/by-uuid/a7bd9db4-4f79-4b84-a32b-effa485bd4e0";
-  networking.hostName = "celestia"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -68,7 +62,6 @@
       "video"
       "render"
     ];
-    packages = with pkgs; [ ];
   };
 
   # Allow unfree packages
@@ -108,25 +101,6 @@
   '';
 
   boot.initrd.kernelModules = [ "amdgpu" ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
