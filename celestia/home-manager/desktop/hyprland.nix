@@ -1,6 +1,7 @@
 { lib, ... }:
 let
   lua = lib.generators.mkLuaInline;
+  wallpaper = ./wallpaper.png;
 
   bind = key: action: {
     _args = [
@@ -40,6 +41,7 @@ in
         (bind "SUPER+C" (exec "pkill waybar || waybar"))
         (bind "SUPER+P" (exec "walker"))
         (bind "SUPER+A" (exec "pwvucontrol"))
+        (bind "SUPER+B" (exec "blueman-manager"))
         (bind "SUPER+Q" "hl.dsp.window.close()")
 
         (bind "SUPER+right" (focusWs "r+1"))
@@ -49,5 +51,11 @@ in
         (bind "SUPER+SHIFT+r" (exec "hyprctl reload"))
       ];
     };
+
+    extraConfig = ''
+      hl.on("hyprland.start", function()
+        hl.exec_cmd('hyprctl hyprpaper wallpaper ",${wallpaper}"')
+      end)
+    '';
   };
 }

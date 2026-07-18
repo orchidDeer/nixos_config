@@ -9,6 +9,7 @@
     ./zeditor.nix
     ./desktop/desktop.nix
     ./librewolf.nix
+    ./obsidian.nix
   ];
 
   home.username = "juna";
@@ -29,7 +30,6 @@
     btop
     signal-desktop
     dig
-    obsidian
     openssl
     nextcloud-client
     nil

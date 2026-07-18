@@ -17,6 +17,7 @@
     ./tailscale.nix
     ./networking.nix
     ./pipewire.nix
+    ./bluetooth.nix
   ];
 
   # Bootloader.

@@ -7,5 +7,6 @@
     ./gtk.nix
     ./qt.nix
     ./pwvucontrol.nix
+    ./wallpaper.nix
   ];
 }
