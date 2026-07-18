@@ -38,6 +38,7 @@
     firefox
     nautilus
     nwg-look
+    rapidraw
   ];
 
   programs.direnv.enable = true;

@@ -19,6 +19,10 @@
       url = "github:abenz1267/walker";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -29,12 +33,14 @@
       nixpkgs,
       sops-nix,
       walker,
+      nur,
       ...
     }@inputs:
     {
       nixosConfigurations.celestia = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux"; # or your target system
         modules = [
+          nur.modules.nixos.default
           ./celestia/configuration.nix
           sops-nix.nixosModules.sops
         ];
@@ -51,6 +57,7 @@
       nixosConfigurations.celestialserver = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux"; # or your target system
         modules = [
+          nur.modules.nixos.default
           ./celestialserver/configuration.nix
           sops-nix.nixosModules.sops
         ];
