@@ -39,7 +39,9 @@ in
         (bind "SUPER+T" (exec "kitty"))
         (bind "SUPER+C" (exec "pkill waybar || waybar"))
         (bind "SUPER+P" (exec "walker"))
+        (bind "SUPER+A" (exec "pwvucontrol"))
         (bind "SUPER+Q" "hl.dsp.window.close()")
+
         (bind "SUPER+right" (focusWs "r+1"))
         (bind "SUPER+left" (focusWs "r-1"))
         (bind "SUPER+SHIFT+right" (moveWs "r+1"))

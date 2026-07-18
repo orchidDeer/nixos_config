@@ -6,5 +6,6 @@
     ./waybar.nix
     ./gtk.nix
     ./qt.nix
+    ./pwvucontrol.nix
   ];
 }
