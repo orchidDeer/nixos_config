@@ -16,6 +16,7 @@
     ./hyprland.nix
     ./tailscale.nix
     ./networking.nix
+    ./pipewire.nix
   ];
 
   # Bootloader.
@@ -61,6 +62,7 @@
       "wheel"
       "video"
       "render"
+      "audio"
     ];
   };
 
