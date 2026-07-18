@@ -10,6 +10,7 @@
     ./desktop/desktop.nix
     ./librewolf.nix
     ./obsidian.nix
+    ./ssh.nix
   ];
 
   home.username = "juna";

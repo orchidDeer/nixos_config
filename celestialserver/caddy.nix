@@ -20,20 +20,6 @@
       '';
     };
 
-    virtualHosts."couchdb.localdeer" = {
-      extraConfig = ''
-        handle_path /e=_/* {
-          reverse_proxy 127.0.0.1:5984
-        }
-
-        tls internal
-        handle {
-          respond "" 403
-          header -Server ""
-        }
-      '';
-    };
-
     virtualHosts."immich.localdeer" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:2283

@@ -16,7 +16,7 @@
     ./caddy.nix
     ./caddy_jellyfin.nix
     ./vaultwarden.nix
-    ./couchdb.nix
+    ./obsidian_livesync/couchdb.nix
     ./tailscale.nix
     ./pihole.nix
     ./actual_budget.nix
