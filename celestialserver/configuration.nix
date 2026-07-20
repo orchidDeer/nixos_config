@@ -20,6 +20,7 @@
     ./tailscale.nix
     ./pihole.nix
     ./actual_budget.nix
+    ./docker/docker.nix
   ];
 
   home-manager.useUserPackages = true;
@@ -136,6 +137,19 @@
     iw
     wirelesstools
   ];
+
+  nix = {
+    settings = {
+      substituters = [
+        "https://nix-community.cachix.org"
+        "https://cache.nixos-cuda.org"
+      ];
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+      ];
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

@@ -22,7 +22,6 @@
     thunderbird
     krita
     legcord
-    zed-editor
     prismlauncher
     prusa-slicer
     jellyfin-desktop
@@ -36,7 +35,6 @@
     nil
     nixd
     nixfmt
-    firefox
     nautilus
     nwg-look
     rapidraw

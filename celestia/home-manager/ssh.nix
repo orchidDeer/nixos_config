@@ -19,7 +19,7 @@
     settings."celestialserver.localdeer" = {
       HostName = "celestialserver.localdeer";
       User = "juna";
-      Port = 5432; # or your real ssh port
+      Port = 10233; # or your real ssh port
       IdentityFile = "~/.ssh/celestia";
     };
   };
