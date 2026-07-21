@@ -14,6 +14,7 @@
     ./hardware-configuration.nix
     inputs.home-manager.nixosModules.default
     ./hyprland.nix
+    ./sddm.nix
     ./tailscale.nix
     ./networking.nix
     ./pipewire.nix

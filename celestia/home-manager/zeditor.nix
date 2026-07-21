@@ -8,6 +8,7 @@
       "toml"
       "rust"
       "html"
+      "qml"
       "material-icon-theme"
       "everforest-blurred"
       "git-firefly"
