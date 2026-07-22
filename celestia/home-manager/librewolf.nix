@@ -8,11 +8,20 @@
       settings = {
         "extensions.autoDisableScopes" = 0;
 
-        # switch off full RFP, use targeted FPP instead
-        "privacy.resistFingerprinting" = false;
-        "privacy.fingerprintingProtection" = true;
-        "privacy.fingerprintingProtection.overrides" = "+AllTargets,-CSSPrefersColorScheme";
+        # WebGL Activation
+        "webgl.disabled" = false;
+        "webgl.force-enabled" = true;
 
+        # Legacy Protection (Disabled)
+        "privacy.resistFingerprinting" = false;
+
+        # New Protection (Enabled with WebGL bypass)
+        "privacy.fingerprintingProtection" = true;
+        # Added -WebGL to the targets to prevent it from being blocked/spoofed
+        "privacy.fingerprintingProtection.overrides" =
+          "+AllTargets,-CSSPrefersColorScheme,-WebGLRenderInfo,-WebGLRenderCapability";
+
+        # Dark Theme Overrides
         "layout.css.prefers-color-scheme.content-override" = 2;
         "ui.systemUsesDarkTheme" = 2;
       };
