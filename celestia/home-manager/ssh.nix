@@ -22,5 +22,10 @@
       Port = 10233; # or your real ssh port
       IdentityFile = "~/.ssh/celestia";
     };
+
+    settings."github.com" = {
+      HostName = "github.com";
+      IdentityFile = "~/.ssh/celestia";
+    };
   };
 }

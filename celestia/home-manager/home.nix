@@ -38,6 +38,8 @@
     nautilus
     nwg-look
     rapidraw
+
+    chromium
   ];
 
   programs.direnv.enable = true;

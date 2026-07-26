@@ -65,6 +65,7 @@
       "video"
       "render"
       "audio"
+      "adbusers"
     ];
   };
 
@@ -79,7 +80,9 @@
     git
     sops
     kitty
+    android-tools
   ];
+  boot.kernelParams = [ "usbcore.autosuspend=-1" ];
 
   # Home manager
   home-manager.useUserPackages = true;
