@@ -10,10 +10,10 @@
 
   # inputs are defined in the input attribute set, and you almost always want to depend on at least nixpkgs
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     home-manager = {
-      url = "github:nix-community/home-manager/release-26.05";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     walker = {
@@ -32,6 +32,7 @@
   outputs =
     {
       nixpkgs,
+      nixpkgs-stable,
       sops-nix,
       walker,
       nur,
@@ -44,11 +45,19 @@
           nur.modules.nixos.default
           ./celestia/configuration.nix
           sops-nix.nixosModules.sops
+          ({ config, pkgs, ... }: {
+            nixpkgs.overlays = [
+              (final: prev: {
+                # Forces moonlight to fetch the pre-compiled version from the stable cache
+                moonlight-qt = inputs.nixpkgs-stable.legacyPackages.${prev.system}.moonlight-qt;
+              })
+            ];
+          })
         ];
         # specialArgs is optional, but I like passing all flake inputs here.
         # specialArgs can be referenced in nixos modules at the top of each file, the same way you refer to `pkgs`: `{ pkgs, inputs, ... }:``
         specialArgs = {
-          inherit inputs; # `inherit inputs` is shorthand for `inputs = inputs`.
+          inherit inputs;
         };
       };
 

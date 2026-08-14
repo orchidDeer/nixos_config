@@ -31,6 +31,13 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
+  programs.steam.enable = true;
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
+
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
@@ -66,6 +73,7 @@
       "render"
       "audio"
       "adbusers"
+      "mount"
     ];
   };
 
@@ -81,6 +89,8 @@
     sops
     kitty
     android-tools
+    gsettings-desktop-schemas
+    glib
   ];
   boot.kernelParams = [ "usbcore.autosuspend=-1" ];
 
@@ -94,6 +104,8 @@
       inputs.walker.homeManagerModules.default
     ];
   };
+
+  programs.dconf.enable = true;
 
   nix.settings.experimental-features = [
     "nix-command"

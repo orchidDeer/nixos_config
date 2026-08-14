@@ -2,6 +2,9 @@
   pkgs,
   ...
 }:
+let
+  system = pkgs.system;
+in
 {
   imports = [
     ../../bash.nix
@@ -17,6 +20,7 @@
   home.homeDirectory = "/home/juna";
 
   home.stateVersion = "26.05";
+  home.pointerCursor.enable = true;
 
   home.packages = with pkgs; [
     thunderbird
@@ -26,7 +30,6 @@
     prusa-slicer
     jellyfin-desktop
     moonlight-qt
-    steam
     btop
     signal-desktop
     dig
@@ -37,9 +40,12 @@
     nixfmt
     nautilus
     nwg-look
+
     rapidraw
 
     chromium
+    joplin-desktop
+    freecad
   ];
 
   programs.direnv.enable = true;

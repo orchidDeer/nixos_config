@@ -3,8 +3,6 @@
   home.packages = with pkgs; [
     gtk3
     gtk4
-    gsettings-desktop-schemas
-    glib
   ];
 
   dconf = {
@@ -15,15 +13,15 @@
         color-scheme = "prefer-dark";
         icon-theme = "Adwaita";
         cursor-theme = "Bibata-Modern-Classic";
-        gtk-theme = "Flat-Remix-GTK-Grey-Darkest";
+        gtk-theme = "Orchis-Dark";
       };
     };
   };
 
   home.file.".config/gtk-4.0/gtk.css".source =
-    "${pkgs.flat-remix-gtk}/share/themes/Flat-Remix-GTK-Grey-Darkest/gtk-4.0/gtk.css";
+    "${pkgs.orchis-theme}/share/themes/Orchis-Dark/gtk-4.0/gtk.css";
   home.file.".config/gtk-4.0/gtk-dark.css".source =
-    "${pkgs.flat-remix-gtk}/share/themes/Flat-Remix-GTK-Grey-Darkest/gtk-4.0/gtk-dark.css";
+    "${pkgs.orchis-theme}/share/themes/Orchis-Dark/gtk-4.0/gtk-dark.css";
 
   home.pointerCursor = {
     gtk.enable = true;
@@ -37,8 +35,8 @@
     enable = true;
 
     theme = {
-      package = pkgs.flat-remix-gtk;
-      name = "Flat-Remix-GTK-Grey-Darkest";
+      package = pkgs.orchis-theme;
+      name = "Orchis-Dark";
     };
 
     iconTheme = {

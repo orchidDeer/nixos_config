@@ -29,7 +29,11 @@
 
     virtualHosts."sunshine.localdeer" = {
       extraConfig = ''
-        reverse_proxy 127.0.0.1:47990
+        reverse_proxy https://127.0.0.1:47990 {
+          transport http {
+            tls_insecure_skip_verify
+          }
+        }
         tls internal
       '';
     };
