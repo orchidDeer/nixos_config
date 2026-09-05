@@ -8,7 +8,7 @@
       PermitRootLogin = "no";
       AllowUsers = [ "juna" ];
     };
-    extraConfig = "MaxAuthTries 3 \n PerSourcePenalties crash:3600s authfail:3600s max:86400s";
+    extraConfig = "MaxAuthTries 3 \n PerSourcePenalties crash:360s authfail:360s max:8640s";
   };
 
   services.endlessh = {

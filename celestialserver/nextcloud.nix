@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   sops.secrets.nextcloud_adminpass = {
     sopsFile = ./nextcloud_adminpass;
@@ -26,6 +26,7 @@
 
   services.nextcloud = {
     enable = true;
+    package = pkgs.nextcloud34;
     hostName = "celestialserver.localdeer";
 
     config = {

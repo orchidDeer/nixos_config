@@ -29,7 +29,6 @@ in
     prismlauncher
     prusa-slicer
     jellyfin-desktop
-    moonlight-qt
     btop
     signal-desktop
     dig
@@ -42,6 +41,9 @@ in
     nwg-look
 
     rapidraw
+    darktable
+
+    godot
 
     chromium
     joplin-desktop

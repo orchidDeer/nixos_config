@@ -4,9 +4,6 @@
   inputs,
   ...
 }:
-let
-  system = pkgs.system;
-in
 {
   sops.secrets.smtp_password = {
     sopsFile = ./smtp_password;
@@ -28,18 +25,8 @@ in
     owner = "vaultwarden";
   };
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      unstable = import inputs.nixpkgs-unstable {
-        inherit system;
-        config.allowUnfree = true;
-      };
-    })
-  ];
-
   services.vaultwarden = {
     enable = true;
-    package = pkgs.unstable.vaultwarden;
     backupDir = "/var/local/vaultwarden/backup";
     environmentFile = config.sops.templates."vaultwarden.env".path;
 

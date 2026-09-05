@@ -23,7 +23,6 @@
     description = "Immich compose stack";
     after = [
       "docker.service"
-      "network-online.target"
       "sops-nix.service"
     ];
     requires = [ "docker.service" ];
