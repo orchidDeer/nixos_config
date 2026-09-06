@@ -8,7 +8,8 @@ in
 {
   imports = [
     ../../bash.nix
-    ./bash.nix
+    ../../fish.nix
+    ./fish.nix
     ./zeditor.nix
     ./desktop/desktop.nix
     ./librewolf.nix
@@ -48,6 +49,7 @@ in
     chromium
     joplin-desktop
     freecad
+    moonlight-qt
   ];
 
   programs.direnv.enable = true;
