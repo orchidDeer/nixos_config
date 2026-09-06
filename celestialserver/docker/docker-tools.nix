@@ -19,19 +19,28 @@ let
       dir = "/etc/jellyfin";
     }
   ];
-
   projectNames = lib.concatMapStringsSep " " (p: p.name) composeProjects;
-
   projectCase = lib.concatMapStringsSep "\n" (p: ''
     ${p.name}) dirs+=("${p.dir}") ;;
   '') composeProjects;
 
-  updateDockerStacks = pkgs.writeShellScriptBin "docker-update-all" ''
+  dockerStack = pkgs.writeShellScriptBin "docker-stack" ''
     set -euo pipefail
+
+    usage() {
+      echo "Usage: docker-stack <status|update|up|down|restart|logs> [project ...]" >&2
+      echo "Known projects: ${projectNames}" >&2
+      exit 1
+    }
+
+    if [ "$#" -eq 0 ]; then
+      usage
+    fi
+    action="$1"
+    shift
 
     all_dirs=(${lib.concatMapStringsSep " " (p: "\"${p.dir}\"") composeProjects})
     dirs=()
-
     if [ "$#" -eq 0 ]; then
       dirs=("''${all_dirs[@]}")
     else
@@ -48,42 +57,47 @@ let
     fi
 
     for dir in "''${dirs[@]}"; do
-      echo "==> Updating stack in $dir"
-      cd "$dir"
-      ${pkgs.docker}/bin/docker compose pull
-      ${pkgs.docker}/bin/docker compose up -d --remove-orphans
-    done
-
-    echo "==> Pruning old images"
-    ${pkgs.docker}/bin/docker image prune -f
-  '';
-
-  statusDockerStacks = pkgs.writeShellScriptBin "docker-status-all" ''
-    set -euo pipefail
-
-    all_dirs=(${lib.concatMapStringsSep " " (p: "\"${p.dir}\"") composeProjects})
-    all_names=(${lib.concatMapStringsSep " " (p: "\"${p.name}\"") composeProjects})
-
-    for i in "''${!all_dirs[@]}"; do
-      dir="''${all_dirs[$i]}"
-      name="''${all_names[$i]}"
-      echo "==> $name ($dir)"
-      (cd "$dir" && ${pkgs.docker}/bin/docker compose ps)
+      echo "==> $action: $dir"
+      case "$action" in
+        status)
+          (cd "$dir" && ${pkgs.docker}/bin/docker compose ps)
+          ;;
+        update)
+          (cd "$dir" && ${pkgs.docker}/bin/docker compose pull && ${pkgs.docker}/bin/docker compose up -d --remove-orphans)
+          ;;
+        up)
+          (cd "$dir" && ${pkgs.docker}/bin/docker compose up -d --remove-orphans)
+          ;;
+        down)
+          (cd "$dir" && ${pkgs.docker}/bin/docker compose down)
+          ;;
+        restart)
+          (cd "$dir" && ${pkgs.docker}/bin/docker compose restart)
+          ;;
+        logs)
+          (cd "$dir" && ${pkgs.docker}/bin/docker compose logs --tail=100 -f)
+          ;;
+        *)
+          usage
+          ;;
+      esac
       echo
     done
-  '';
 
+    if [ "$action" = "update" ]; then
+      echo "==> Pruning old images"
+      ${pkgs.docker}/bin/docker image prune -f
+    fi
+  '';
 in
 {
   virtualisation.docker.enable = true;
-
   environment.systemPackages = [
-    updateDockerStacks
-    statusDockerStacks
+    dockerStack
     pkgs.docker
   ];
   environment.shellAliases = {
-    dcupdate = "docker-update-all";
-    dcstatus = "docker-status-all";
+    dcupdate = "docker-stack update";
+    dcstatus = "docker-stack status";
   };
 }
