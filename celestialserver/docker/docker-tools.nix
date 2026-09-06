@@ -10,6 +10,14 @@ let
       name = "immich";
       dir = "/etc/immich";
     }
+    {
+      name = "steam-headless";
+      dir = "/opt/container-services/steam-headless";
+    }
+    {
+      name = "jellyfin";
+      dir = "/etc/jellyfin";
+    }
   ];
 
   projectNames = lib.concatMapStringsSep " " (p: p.name) composeProjects;

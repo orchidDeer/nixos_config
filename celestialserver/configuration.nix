@@ -14,7 +14,6 @@
     ./nextcloud.nix
     ./ssh.nix
     ./caddy.nix
-    ./caddy_jellyfin.nix
     ./vaultwarden.nix
     ./obsidian_livesync/couchdb.nix
     ./tailscale.nix
