@@ -66,6 +66,7 @@
     settings = {
       interfaces-config = {
         interfaces = [ "enp3s0" ];
+        dhcp-socket-type = "udp";
       };
       lease-database = {
         type = "memfile";

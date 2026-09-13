@@ -20,6 +20,7 @@
     ./pihole.nix
     ./actual_budget.nix
     ./docker/docker.nix
+    ./inno_pbx.nix
   ];
 
   home-manager.useUserPackages = true;

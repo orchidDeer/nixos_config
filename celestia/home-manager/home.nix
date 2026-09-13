@@ -50,6 +50,9 @@ in
     joplin-desktop
     freecad
     moonlight-qt
+
+    inkscape
+    libresprite
   ];
 
   programs.direnv.enable = true;

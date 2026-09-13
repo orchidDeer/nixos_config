@@ -1,5 +1,8 @@
-{ ... }:
+{ config, ... }:
 {
+  # add svg
+  home.file.".config/waybar/icons/battery.svg".source = ./icons/battery.svg;
+
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -17,10 +20,18 @@
           "hyprland/workspaces"
           "hyprland/submap"
         ];
+
+        # add svg
+        "image#battery-test" = {
+          path = "${config.home.homeDirectory}/.config/waybar/icons/battery.svg";
+          size = 34;
+        };
+
         modules-center = [ "hyprland/window" ];
         modules-right = [
           "pulseaudio"
           "network"
+          "image#battery-test"   # add svg
           "battery"
           "clock"
           "tray"
@@ -104,7 +115,6 @@
       #window,
       #pulseaudio,
       #network,
-      #battery,
       #clock,
       #tray {
         background: rgba(30, 30, 46, 0.75);
@@ -112,6 +122,21 @@
         padding: 0 12px;
         margin: 4px 2px;
         border-radius: 12px;
+      }
+
+      #image.battery-test, #battery {
+        background: rgba(30, 30, 46, 0.75);
+        margin: 4px 0;
+      }
+      #image.battery-test {
+        margin-right: 0;
+        border-radius: 12px 0 0 12px;
+        padding: 0 2px 0 10px;
+      }
+      #battery {
+        margin-left: 0;
+        border-radius: 0 12px 12px 0;
+        padding: 0 12px 0 2px;
       }
 
       #workspaces button {
