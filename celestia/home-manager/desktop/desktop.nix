@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   imports = [
     ./hyprland.nix
@@ -8,6 +8,12 @@
     ./qt.nix
     ./pwvucontrol.nix
     ./wallpaper.nix
-    ./flameshot.nix
+  ];
+
+
+  home.packages = with pkgs; [
+    hyprshot
+    satty
+    wl-clipboard
   ];
 }

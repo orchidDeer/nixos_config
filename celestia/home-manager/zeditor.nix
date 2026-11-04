@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   programs.zed-editor = {
     enable = true;
@@ -16,6 +16,15 @@
       "everforest-blurred"
       "git-firefly"
     ];
+
+    extraPackages = with pkgs; [
+      rustc
+      cargo
+      rust-analyzer
+      rustfmt
+      clippy
+    ];
+
     userSettings = {
       theme = {
         mode = "dark";
@@ -40,11 +49,12 @@
         };
       };
 
+      load_direnv = "shell_hook";
       lsp = {
         rust-analyzer = {
           binary = {
-            # path = lib.getExe pkgs.rust-analyzer;
             path_lookup = true;
+            ignore_system_version = false;
           };
         };
       };

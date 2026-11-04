@@ -70,6 +70,18 @@
           nur.modules.nixos.default
           ./celestialserver/configuration.nix
           sops-nix.nixosModules.sops
+          ({ config, pkgs, ... }: {
+            nixpkgs.overlays = [
+              (final: prev: {
+                pihole-ftl = inputs.nixpkgs-stable.legacyPackages.${prev.system}.pihole-ftl;
+                open-webui =
+                  (import inputs.nixpkgs-stable {
+                    system = prev.stdenv.hostPlatform.system;
+                    config.allowUnfree = true;
+                  }).open-webui;
+              })
+            ];
+          })
         ];
         # specialArgs is optional, but I like passing all flake inputs here.
         # specialArgs can be referenced in nixos modules at the top of each file, the same way you refer to `pkgs`: `{ pkgs, inputs, ... }:``

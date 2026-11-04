@@ -21,6 +21,7 @@
     ./actual_budget.nix
     ./docker/docker.nix
     ./inno_pbx.nix
+    ./ollama.nix
   ];
 
   home-manager.useUserPackages = true;
@@ -113,6 +114,7 @@
       "input"
       "render"
       "seat"
+      "caddy"
     ];
     packages = with pkgs; [ ];
   };

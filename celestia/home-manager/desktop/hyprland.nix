@@ -114,6 +114,9 @@ in
         (bind "SUPER+ALT+up" (moveMon "u"))
         (bind "SUPER+ALT+down" (moveMon "d"))
         (bind "SUPER+SHIFT+m" (exec "hypr-monitor-toggle"))
+        (bind "SUPER+S" (exec "hyprshot -m region --raw | satty --filename - --output-filename /home/juna/Screenshots/%Y-%m-%d_%H-%M-%S.png --copy-command wl-copy"))
+        (bind "SUPER+SHIFT+S" (exec "hyprshot -m output -m active -o /home/juna/Screenshots"))
+        (bind "SUPER+CTRL+S" (exec "hyprshot -m window -o /home/juna/Screenshots"))
       ];
     };
     extraConfig = ''
