@@ -23,6 +23,13 @@
       IdentityFile = "~/.ssh/celestia";
     };
 
+    settings."192.168.2.111" = {
+      HostName = "192.168.2.111";
+      User = "juna";
+      Port = 10233; # or your real ssh port
+      IdentityFile = "~/.ssh/celestia";
+    };
+
     settings."github.com" = {
       HostName = "github.com";
       IdentityFile = "~/.ssh/celestia";

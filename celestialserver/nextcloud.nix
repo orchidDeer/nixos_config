@@ -1,10 +1,5 @@
 { config, pkgs, ... }:
 {
-  sops.secrets.nextcloud_adminpass = {
-    sopsFile = ./nextcloud_adminpass;
-    format = "binary";
-  };
-
   fileSystems."/var/lib/nextcloud/data" = {
     device = "/mnt/data/nextcloud";
     options = [ "bind" ];
@@ -30,8 +25,6 @@
     hostName = "celestialserver.localdeer";
 
     config = {
-      adminpassFile = config.sops.secrets.nextcloud_adminpass.path;
-      adminuser = "admin";
       dbtype = "sqlite";
     };
 
