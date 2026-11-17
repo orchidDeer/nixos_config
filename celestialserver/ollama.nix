@@ -10,7 +10,6 @@
     # Optional: preload models, see https://ollama.com/library
     loadModels = [
       "qwen2.5-coder:14b-instruct-q5_K_M" # Cede review
-      "qwen3.5:9b-instruct-q8_0" # Brainstorming
       "deepseek-r1:14b" # Chain of Thought
     ];
   };

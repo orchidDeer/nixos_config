@@ -116,7 +116,7 @@
       "seat"
       "caddy"
     ];
-    packages = with pkgs; [ ];
+    packages = [ ];
   };
 
   environment.interactiveShellInit = ''

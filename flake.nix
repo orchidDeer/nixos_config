@@ -73,7 +73,7 @@
           ({ config, pkgs, ... }: {
             nixpkgs.overlays = [
               (final: prev: {
-                pihole-ftl = inputs.nixpkgs-stable.legacyPackages.${prev.system}.pihole-ftl;
+                pihole-ftl = inputs.nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system}.pihole-ftl;
                 open-webui =
                   (import inputs.nixpkgs-stable {
                     system = prev.stdenv.hostPlatform.system;
