@@ -106,7 +106,7 @@
   };
 
   programs.dconf.enable = true;
-  virtualisation.vmware.host.enable = true;
+  #virtualisation.vmware.host.enable = true;
 
   nix.settings.experimental-features = [
     "nix-command"

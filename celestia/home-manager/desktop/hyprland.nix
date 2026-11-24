@@ -64,6 +64,11 @@ in
         decoration = {
           rounding = 10;
         };
+        input = {
+          touchpad = {
+            disable_while_typing = false;
+          };
+        };
       };
 
       # Declarative default layout — applied automatically on every start/reload,
