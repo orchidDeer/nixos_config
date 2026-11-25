@@ -13,17 +13,33 @@
     enable = true;
     email = "caddy@orchiddeer.de";
 
+    # Restart instead of hot-reload on config changes. After a reload Caddy's
+    # cert maintenance lost track of its certs ("no configuration associated
+    # with certificate") and stopped renewing them.
+    enableReload = false;
+
+    # Internal CA for *.localdeer. Defaults are 12h leaf / 7d intermediate,
+    # which break quickly if a renewal is missed. Root stays the same (valid to 2036).
+    globalConfig = ''
+      pki {
+        ca local {
+          intermediate_lifetime 365d
+        }
+      }
+      cert_issuer internal {
+        lifetime 90d
+      }
+    '';
+
     virtualHosts."nextcloud.localdeer" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:42633
-        tls internal
       '';
     };
 
     virtualHosts."pihole.localdeer" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:3254
-        tls internal
       '';
     };
 
@@ -34,7 +50,6 @@
         reverse_proxy 127.0.0.1:3000
       }
 
-      tls internal
     '';
 
     virtualHosts."vaultwarden.localdeer".extraConfig = ''
@@ -43,7 +58,6 @@
       reverse_proxy 127.0.0.1:${toString config.services.vaultwarden.config.ROCKET_PORT} {
           header_up X-Real-IP {remote_host}
       }
-      tls internal
     '';
   };
 

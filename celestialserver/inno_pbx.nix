@@ -25,7 +25,6 @@
     virtualHosts."https://dev-pbx.localdeer" = {
       extraConfig = ''
         reverse_proxy 192.168.150.164:80
-        tls internal
       '';
     };
 
@@ -38,7 +37,6 @@
     virtualHosts."https://dev-app.localdeer" = {
       extraConfig = ''
         reverse_proxy 192.168.150.165:80
-        tls internal
       '';
     };
   };

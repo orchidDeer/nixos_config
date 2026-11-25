@@ -41,7 +41,6 @@
           tls_insecure_skip_verify
         }
       }
-      tls internal
     '';
   };
 }

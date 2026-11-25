@@ -25,7 +25,6 @@
   services.caddy.virtualHosts."chat.localdeer" = {
     extraConfig = ''
       reverse_proxy 127.0.0.1:7526
-      tls internal
     '';
   };
 }

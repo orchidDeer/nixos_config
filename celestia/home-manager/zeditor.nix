@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 {
   programs.zed-editor = {
     enable = true;
@@ -23,6 +23,7 @@
       rust-analyzer
       rustfmt
       clippy
+      claude-code
     ];
 
     userSettings = {
@@ -34,6 +35,15 @@
       icon_theme = "Material Icon Theme";
       ui_font_size = 16;
       buffer_font_size = 15;
+
+      agent_servers = {
+        "Claude Code" = {
+          type = "custom";
+          command = lib.getExe pkgs.claude-agent-acp;
+          args = [ ];
+          env = { };
+        };
+      };
 
       languages = {
         Nix = {

@@ -23,9 +23,17 @@
       ${pkgs.tailscale}/bin/tailscale cert --cert-file /var/lib/tailscale-certs/celestialserver.tail1ab1f7.ts.net.crt \
         --key-file /var/lib/tailscale-certs/celestialserver.tail1ab1f7.ts.net.key \
         celestialserver.tail1ab1f7.ts.net
-      systemctl reload caddy
+      # tailscale writes the key as root-only; Caddy runs as user caddy
+      chown root:caddy /var/lib/tailscale-certs/*
+      chmod 0640 /var/lib/tailscale-certs/*
+      # restart, not reload: reloads broke Caddy's internal cert renewal
+      systemctl try-restart caddy
     '';
   };
+
+  systemd.tmpfiles.rules = [
+    "d /var/lib/tailscale-certs 0750 root caddy -"
+  ];
 
   systemd.timers.tailscale-cert-renew = {
     wantedBy = [ "timers.target" ];

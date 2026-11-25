@@ -92,7 +92,6 @@ in
   services.caddy.virtualHosts."couchdb.localdeer" = {
     extraConfig = ''
       reverse_proxy 127.0.0.1:5984
-      tls internal
     '';
   };
   services.caddy.virtualHosts."celestialserver.tail1ab1f7.ts.net" = {

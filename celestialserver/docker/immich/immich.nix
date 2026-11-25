@@ -41,7 +41,6 @@
   services.caddy.virtualHosts."immich.localdeer" = {
     extraConfig = ''
       reverse_proxy 127.0.0.1:2283
-      tls internal
     '';
   };
 }
