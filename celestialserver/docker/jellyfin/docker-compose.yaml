@@ -8,9 +8,10 @@ services:
     devices:
       - /dev/net/tun:/dev/net/tun
     ports:
-      - 8080:8080
+      - 127.0.0.1:8080:8080
     networks:
       - isolated_torrent_network
+      - jellyfin # lets sonarr/radarr reach qbittorrent at gluetun:8080
     environment:
       - VPN_SERVICE_PROVIDER=protonvpn
       - VPN_TYPE=wireguard
@@ -61,7 +62,7 @@ services:
       #- LANG=fr_FR
       #- LANG=en_US
     ports:
-      - 8191:8191
+      - 127.0.0.1:8191:8191
     restart: unless-stopped
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
@@ -75,7 +76,7 @@ services:
     volumes:
       - ${COMMON_PATH}/configs/prowlarr:/config
     ports:
-      - 9696:9696
+      - 127.0.0.1:9696:9696
     restart: unless-stopped
   jackett:
     image: lscr.io/linuxserver/jackett:latest
@@ -89,7 +90,7 @@ services:
     volumes:
       - ${COMMON_PATH}/configs/jackett:/config
     ports:
-      - 9117:9117
+      - 127.0.0.1:9117:9117
     restart: unless-stopped
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -106,7 +107,7 @@ services:
       - ${COMMON_PATH}/sonarr/tv:/tv
       - ${COMMON_PATH}/qbittorrent/downloads:/downloads
     ports:
-      - 8989:8989
+      - 127.0.0.1:8989:8989
     restart: unless-stopped
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -123,7 +124,7 @@ services:
       - ${COMMON_PATH}/radarr/movies:/movies
       - ${COMMON_PATH}/qbittorrent/downloads:/downloads
     ports:
-      - 7878:7878
+      - 127.0.0.1:7878:7878
     restart: unless-stopped
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
@@ -137,7 +138,7 @@ services:
       - NVIDIA_VISIBLE_DEVICES=all
     ports:
       - 8096:8096
-      - 8920:8920
+      - 127.0.0.1:8920:8920
       - 7359:7359/udp
       - 1900:1900/udp
     volumes:
@@ -166,7 +167,7 @@ services:
       - LOG_LEVEL=debug
       - TZ=${TZ}
     ports:
-      - 5055:5055
+      - 127.0.0.1:5055:5055
     volumes:
       - ${COMMON_PATH}/configs/seerr:/app/config
     healthcheck:
@@ -179,12 +180,14 @@ services:
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
+    networks:
+      - jellyfin
     environment:
       - PUID=0
       - PGID=0
       - TZ=${TZ}
     ports:
-      - 6767:6767
+      - 127.0.0.1:6767:6767
     volumes:
       - ${COMMON_PATH}:${COMMON_PATH}
       - ${COMMON_PATH}/configs/bazarr:/config

@@ -2,13 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    inputs.home-manager.nixosModules.default
     ./networking.nix
     ./nvidia.nix
     ./nextcloud.nix
@@ -24,16 +23,7 @@
     ./ollama.nix
   ];
 
-  home-manager.useUserPackages = true;
-  home-manager.useGlobalPkgs = true;
-  home-manager.backupFileExtension = "backup";
   home-manager.users.juna = import ./home.nix;
-
-  # flakes
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
 
   sops.age.keyFile = "/var/lib/sops-nix/keys.txt";
 
@@ -41,14 +31,12 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  virtualisation.docker = {
-    enable = true;
-    daemon.settings = {
-      ipv6 = true;
-      # Required to allow Docker to manage IPv6 firewall rules correctly
-      "experimental" = true;
-      "ip6tables" = true;
-    };
+  # Docker itself is enabled by docker/compose-stacks.nix
+  virtualisation.docker.daemon.settings = {
+    ipv6 = true;
+    # Required to allow Docker to manage IPv6 firewall rules correctly
+    "experimental" = true;
+    "ip6tables" = true;
   };
 
   nix.settings.trusted-users = [
@@ -77,30 +65,6 @@
     ];
   };
 
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "de_DE.UTF-8";
-    LC_IDENTIFICATION = "de_DE.UTF-8";
-    LC_MEASUREMENT = "de_DE.UTF-8";
-    LC_MONETARY = "de_DE.UTF-8";
-    LC_NAME = "de_DE.UTF-8";
-    LC_NUMERIC = "de_DE.UTF-8";
-    LC_PAPER = "de_DE.UTF-8";
-    LC_TELEPHONE = "de_DE.UTF-8";
-    LC_TIME = "de_DE.UTF-8";
-  };
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.juna = {
     isNormalUser = true;
@@ -119,12 +83,6 @@
     packages = [ ];
   };
 
-  environment.interactiveShellInit = ''
-    source ${pkgs.git}/share/bash-completion/completions/git-prompt.sh
-  '';
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
 
   # List packages installed in system profile. To search, run:

@@ -1,14 +1,9 @@
 {
-  # 1. Netzwerk-Ports in der Firewall freigeben
-  networking.firewall = {
-    enable = true;
-    allowedUDPPorts = [
-      53
-      67
-      68
-    ];
-    allowedTCPPorts = [ 53 ]; # Aktiviert den DNS-Port für TCP-Abfragen
-  };
+  # DHCP (kea on enp3s0). DNS 53 tcp/udp is opened by openFirewallDNS below.
+  networking.firewall.allowedUDPPorts = [
+    67
+    68
+  ];
 
   services.pihole-ftl = {
     enable = true;

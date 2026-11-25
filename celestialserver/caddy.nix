@@ -71,7 +71,4 @@
     80
     443
   ];
-
-  # Optional: Trust the tailscale interface completely if you face blocking issues
-  networking.firewall.trustedInterfaces = [ "tailscale0" ];
 }

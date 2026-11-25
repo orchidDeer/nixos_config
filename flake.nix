@@ -1,14 +1,6 @@
-# Flakes are pretty much programming language packages for nix.d
-# They have inputs (other flakes they depend on),
-# and outputs (an attribute set that depends on the inputs,
-# with special names for specific functionality like exposing nixos configurations)
-#
-# The contents of this file has to be saved as `flake.nix` in the root of your repo to work.
-
 {
   description = "My NixOS configuration";
 
-  # inputs are defined in the input attribute set, and you almost always want to depend on at least nixpkgs
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-26.05";
@@ -28,69 +20,50 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  # outputs is a function taking in the inputs as an attribute set and returning an attribute set with specific attributes
   outputs =
     {
       nixpkgs,
       nixpkgs-stable,
       sops-nix,
-      walker,
       nur,
       ...
     }@inputs:
-    {
-      nixosConfigurations.celestia = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux"; # or your target system
-        modules = [
-          nur.modules.nixos.default
-          ./celestia/configuration.nix
-          sops-nix.nixosModules.sops
-          ({ config, pkgs, ... }: {
-            nixpkgs.overlays = [
-              (final: prev: {
-                # Forces moonlight to fetch the pre-compiled version from the stable cache
-                moonlight-qt = inputs.nixpkgs-stable.legacyPackages.${prev.system}.moonlight-qt;
-              })
-            ];
-          })
-        ];
-        # specialArgs is optional, but I like passing all flake inputs here.
-        # specialArgs can be referenced in nixos modules at the top of each file, the same way you refer to `pkgs`: `{ pkgs, inputs, ... }:``
-        specialArgs = {
-          inherit inputs;
-        };
-      };
+    let
+      # Package set from the stable channel, for packages that are broken or
+      # not cached on unstable.
+      stableFor = prev: nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system};
 
-      # `nixosConfigurations` is a special output name recognized by `nixos-rebuild`.
-      # Using this, you can do `nixos-rebuild switch --flake /path/to/flake/directory#servername`
-      # or even `nixos-rebuild switch --flake github:owner/repo#servername` (or git+https://customgitserver.org/owner/repo#server)
-      nixosConfigurations.celestialserver = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux"; # or your target system
-        modules = [
-          nur.modules.nixos.default
-          ./celestialserver/configuration.nix
-          sops-nix.nixosModules.sops
-          ({ config, pkgs, ... }: {
-            nixpkgs.overlays = [
-              (final: prev: {
-                pihole-ftl = inputs.nixpkgs-stable.legacyPackages.${prev.stdenv.hostPlatform.system}.pihole-ftl;
-                open-webui =
-                  (import inputs.nixpkgs-stable {
-                    system = prev.stdenv.hostPlatform.system;
-                    config.allowUnfree = true;
-                  }).open-webui;
-              })
-            ];
-          })
-        ];
-        # specialArgs is optional, but I like passing all flake inputs here.
-        # specialArgs can be referenced in nixos modules at the top of each file, the same way you refer to `pkgs`: `{ pkgs, inputs, ... }:``
-        specialArgs = {
-          inherit inputs; # `inherit inputs` is shorthand for `inputs = inputs`.
+      mkHost =
+        name: overlays:
+        nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            nur.modules.nixos.default
+            sops-nix.nixosModules.sops
+            ./common.nix
+            ./${name}/configuration.nix
+            { nixpkgs.overlays = overlays; }
+          ];
+          specialArgs = { inherit inputs; };
         };
-      };
+    in
+    {
+      nixosConfigurations.celestia = mkHost "celestia" [
+        (final: prev: {
+          # Fetch the pre-compiled moonlight from the stable cache
+          moonlight-qt = (stableFor prev).moonlight-qt;
+        })
+      ];
+
+      nixosConfigurations.celestialserver = mkHost "celestialserver" [
+        (final: prev: {
+          pihole-ftl = (stableFor prev).pihole-ftl;
+          open-webui =
+            (import nixpkgs-stable {
+              system = prev.stdenv.hostPlatform.system;
+              config.allowUnfree = true;
+            }).open-webui;
+        })
+      ];
     };
 }
-
-# Flakes can do a lot more than just this, but these are the basics.
-# They are documented here https://wiki.nixos.org/wiki/Flakes (and tbh the wiki probably says most of what i just wrote)

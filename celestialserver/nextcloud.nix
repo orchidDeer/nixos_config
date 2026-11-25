@@ -3,7 +3,7 @@
   fileSystems."/var/lib/nextcloud/data" = {
     device = "/mnt/data/nextcloud";
     options = [ "bind" ];
-    fsType = "ext4";
+    fsType = "none";
   };
 
   systemd.tmpfiles.rules = [
@@ -12,7 +12,7 @@
 
   systemd.services.nextcloud-setup.requires = [ "var-lib-nextcloud-data.mount" ];
   systemd.services.nextcloud-cron.requires = [ "var-lib-nextcloud-data.mount" ];
-  systemd.services.phpfm-nextcloud.requires = [ "var-lib-nextcloud-data.mount" ];
+  systemd.services.phpfpm-nextcloud.requires = [ "var-lib-nextcloud-data.mount" ];
   systemd.services.redis-nextcloud.requires = [ "var-lib-nextcloud-data.mount" ];
   systemd.services.nextcloud-update-apps.requires = [ "var-lib-nextcloud-data.mount" ];
   systemd.services.nextcloud-update-db.requires = [ "var-lib-nextcloud-data.mount" ];
@@ -49,10 +49,4 @@
       ];
     };
   };
-
-  # Open firewall for HTTP/HTTPS
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
 }

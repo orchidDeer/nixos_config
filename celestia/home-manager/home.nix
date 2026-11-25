@@ -2,9 +2,6 @@
   pkgs,
   ...
 }:
-let
-  system = pkgs.system;
-in
 {
   imports = [
     ../../bash.nix

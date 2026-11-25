@@ -12,7 +12,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    inputs.home-manager.nixosModules.default
     ./hyprland.nix
     ./sddm.nix
     ./tailscale.nix
@@ -38,30 +37,6 @@
     enable32Bit = true;
   };
 
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "de_DE.UTF-8";
-    LC_IDENTIFICATION = "de_DE.UTF-8";
-    LC_MEASUREMENT = "de_DE.UTF-8";
-    LC_MONETARY = "de_DE.UTF-8";
-    LC_NAME = "de_DE.UTF-8";
-    LC_NUMERIC = "de_DE.UTF-8";
-    LC_PAPER = "de_DE.UTF-8";
-    LC_TELEPHONE = "de_DE.UTF-8";
-    LC_TIME = "de_DE.UTF-8";
-  };
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."juna" = {
     isNormalUser = true;
@@ -76,9 +51,6 @@
       "mount"
     ];
   };
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -95,9 +67,6 @@
   boot.kernelParams = [ "usbcore.autosuspend=-1" ];
 
   # Home manager
-  home-manager.useUserPackages = true;
-  home-manager.useGlobalPkgs = true;
-  home-manager.backupFileExtension = "backup";
   home-manager.users.juna = {
     imports = [
       ./home-manager/home.nix
@@ -105,20 +74,9 @@
     ];
   };
 
-  programs.dconf.enable = true;
   #virtualisation.vmware.host.enable = true;
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-
-  # Fix for __git_ps1 command not found
-  environment.interactiveShellInit = ''
-    source ${pkgs.git}/share/bash-completion/completions/git-prompt.sh
-  '';
 
   boot.initrd.kernelModules = [ "amdgpu" ];
 

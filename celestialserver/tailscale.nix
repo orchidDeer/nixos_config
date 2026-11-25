@@ -3,17 +3,12 @@
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "both";
+    openFirewall = true; # 41641/udp
   };
 
   networking.firewall = {
-    enable = true;
     checkReversePath = "loose";
-
-    allowedUDPPorts = [
-      53
-      41641
-    ];
-    allowedTCPPorts = [ 53 ];
+    trustedInterfaces = [ "tailscale0" ];
   };
 
   systemd.services.tailscale-cert-renew = {

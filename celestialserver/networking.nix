@@ -83,21 +83,8 @@
     };
   };
 
-  networking.firewall = {
-    enable = true;
-
-    allowedUDPPorts = [
-      53
-      41641
-    ];
-    allowedTCPPorts = [ 53 ];
-
-    checkReversePath = "loose";
-
-    trustedInterfaces = [
-      "tailscale0"
-    ];
-  };
+  # Ports are opened by the modules that need them (caddy, pihole, tailscale, ...)
+  networking.firewall.enable = true;
 
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;

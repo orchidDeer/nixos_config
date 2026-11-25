@@ -4,8 +4,10 @@
     enable = true;
     package = pkgs.ollama-cuda;
 
+    # Listens everywhere, but the port is not opened in the firewall:
+    # reachable from localhost and over Tailscale (trusted interface) only.
     host = "0.0.0.0";
-    openFirewall = true;
+    openFirewall = false;
 
     # Optional: preload models, see https://ollama.com/library
     loadModels = [

@@ -10,10 +10,6 @@
     "nvidia"
   ];
 
-  # docker
-  hardware.nvidia-container-toolkit.enable = true;
-
-  nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     (sunshine.override { cudaSupport = true; })
   ];
@@ -78,9 +74,11 @@
   systemd.services.nvidia-undervolt = {
     description = "Lock RTX 4070 Clock for Undervolting";
     wantedBy = [ "multi-user.target" ];
+    after = [ "nvidia-persistenced.service" ];
+    wants = [ "nvidia-persistenced.service" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "/run/current-system/sw/bin/nvidia-smi -lgc 210,2400";
+      ExecStart = "${config.hardware.nvidia.package.bin}/bin/nvidia-smi -lgc 210,2400";
       RemainAfterExit = true;
     };
   };

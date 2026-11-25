@@ -7,9 +7,4 @@
       hostname = "127.0.0.1";
     };
   };
-
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
 }

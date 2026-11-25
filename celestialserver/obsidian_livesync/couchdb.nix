@@ -5,6 +5,9 @@
   ...
 }:
 let
+  # obsidian-livesync commit for the setup URI generator (bump deliberately)
+  livesyncRev = "70899e2fd44277e564173d2c45ee7fde6f499185";
+
   vaults = {
     juna = {
       database = "junaobsidian";
@@ -34,7 +37,9 @@ let
         # shellcheck disable=SC1090
         source "$CONF_FILE"
         set +a
-        output=$(deno run -A https://raw.githubusercontent.com/vrtmrz/obsidian-livesync/main/utils/flyio/generate_setupuri.ts)
+        # Pinned to a commit: this script gets the CouchDB password in its env.
+        output=$(deno run --allow-env --allow-read --allow-net \
+          https://raw.githubusercontent.com/vrtmrz/obsidian-livesync/${livesyncRev}/utils/flyio/generate_setupuri.ts)
         echo "$output"
         uri=$(echo "$output" | grep -o 'obsidian://setuplivesync[^[:space:]]*' || true)
         if [[ -n "$uri" ]]; then
