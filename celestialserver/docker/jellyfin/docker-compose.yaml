@@ -70,27 +70,13 @@ services:
     networks:
       - jellyfin
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=1000
+      - PGID=1000
       - TZ=${TZ}
     volumes:
       - ${COMMON_PATH}/configs/prowlarr:/config
     ports:
       - 127.0.0.1:9696:9696
-    restart: unless-stopped
-  jackett:
-    image: lscr.io/linuxserver/jackett:latest
-    container_name: jackett
-    networks:
-      - jellyfin
-    environment:
-      - PUID=0
-      - PGID=0
-      - TZ=${TZ}
-    volumes:
-      - ${COMMON_PATH}/configs/jackett:/config
-    ports:
-      - 127.0.0.1:9117:9117
     restart: unless-stopped
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -98,8 +84,8 @@ services:
     networks:
       - jellyfin
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=1000
+      - PGID=1000
       - TZ=${TZ}
     volumes:
       - ${COMMON_PATH}:${COMMON_PATH}
@@ -115,8 +101,8 @@ services:
     networks:
       - jellyfin
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=1000
+      - PGID=1000
       - TZ=${TZ}
     volumes:
       - ${COMMON_PATH}:${COMMON_PATH}
@@ -132,8 +118,8 @@ services:
     networks:
       - jellyfin
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=1000
+      - PGID=1000
       - TZ=${TZ}
       - NVIDIA_VISIBLE_DEVICES=all
     ports:
@@ -164,7 +150,7 @@ services:
     networks:
       - jellyfin
     environment:
-      - LOG_LEVEL=debug
+      - LOG_LEVEL=info
       - TZ=${TZ}
     ports:
       - 127.0.0.1:5055:5055
@@ -183,8 +169,8 @@ services:
     networks:
       - jellyfin
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=1000
+      - PGID=1000
       - TZ=${TZ}
     ports:
       - 127.0.0.1:6767:6767

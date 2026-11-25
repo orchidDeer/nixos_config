@@ -41,7 +41,7 @@
       useDHCP = true;
       ipv4.addresses = [
         {
-          address = "200.0.0.1";
+          address = "10.200.0.1";
           prefixLength = 24;
         }
       ];
@@ -76,8 +76,8 @@
       subnet4 = [
         {
           id = 1;
-          subnet = "200.0.0.0/24";
-          pools = [ { pool = "200.0.0.100 - 200.0.0.200"; } ];
+          subnet = "10.200.0.0/24";
+          pools = [ { pool = "10.200.0.100 - 10.200.0.200"; } ];
         }
       ];
     };

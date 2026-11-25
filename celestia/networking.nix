@@ -18,7 +18,7 @@
       };
       ipv4 = {
         method = "auto";
-        routes = "192.168.2.111/24,200.0.0.1";
+        routes = "192.168.2.111/24,10.200.0.1";
         never-default = true;
       };
       ipv6.method = "disabled";

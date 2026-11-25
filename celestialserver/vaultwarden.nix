@@ -30,7 +30,7 @@
 
     config = {
       # Refer to https://github.com/dani-garcia/vaultwarden/blob/main/.env.template
-      DOMAIN = "https://vaultwarden.orchiddeer.de";
+      DOMAIN = "https://vaultwarden.localdeer";
       SIGNUPS_ALLOWED = false;
 
       ROCKET_ADDRESS = "127.0.0.1";

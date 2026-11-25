@@ -61,10 +61,9 @@
     '';
   };
 
-  environment.variables = {
-    SSL_CERT_FILE = "/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt";
-    NIX_SSL_CERT_FILE = "/var/lib/caddy/.local/share/caddy/pki/authorities/local/root.crt";
-  };
+  # Trust Caddy's local root CA (*.localdeer) in addition to the normal CA bundle.
+  # Same root cert celestia uses (valid until 2036).
+  security.pki.certificateFiles = [ ../celestia/celestialserver.crt ];
 
   # Open standard web ports globally for LAN and Tailscale
   networking.firewall.allowedTCPPorts = [

@@ -29,12 +29,6 @@
       '';
     };
 
-    virtualHosts."jackett.localdeer" = {
-      extraConfig = ''
-        reverse_proxy 127.0.0.1:9117
-      '';
-    };
-
     virtualHosts."flaresolverr.localdeer" = {
       extraConfig = ''
         reverse_proxy 127.0.0.1:8191
