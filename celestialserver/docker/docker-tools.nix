@@ -1,97 +1,73 @@
 {
+  config,
   pkgs,
   lib,
   ...
 }:
 let
-  # Every compose stack managed on this machine.
-  composeProjects = [
-    {
-      name = "immich";
-      dir = "/etc/immich";
-    }
-    {
-      name = "steam-headless";
-      dir = "/opt/container-services/steam-headless";
-    }
-    {
-      name = "jellyfin";
-      dir = "/etc/jellyfin";
-    }
-  ];
-  projectNames = lib.concatMapStringsSep " " (p: p.name) composeProjects;
-  projectCase = lib.concatMapStringsSep "\n" (p: ''
-    ${p.name}) dirs+=("${p.dir}") ;;
-  '') composeProjects;
+  # Stacks come from local.composeStacks (see compose-stacks.nix).
+  stackNames = lib.attrNames config.local.composeStacks;
+  docker = "${pkgs.docker}/bin/docker";
 
   dockerStack = pkgs.writeShellScriptBin "docker-stack" ''
     set -euo pipefail
 
+    known=(${lib.escapeShellArgs stackNames})
+
     usage() {
-      echo "Usage: docker-stack <status|update|up|down|restart|logs> [project ...]" >&2
-      echo "Known projects: ${projectNames}" >&2
+      echo "Usage: docker-stack <status|update|up|down|restart> [stack ...]" >&2
+      echo "       docker-stack logs <stack> [service ...]" >&2
+      echo "Stacks: ''${known[*]}" >&2
       exit 1
     }
 
-    if [ "$#" -eq 0 ]; then
-      usage
-    fi
-    action="$1"
-    shift
+    check() {
+      for k in "''${known[@]}"; do [ "$k" = "$1" ] && return 0; done
+      echo "Unknown stack: $1 (known: ''${known[*]})" >&2
+      exit 1
+    }
 
-    all_dirs=(${lib.concatMapStringsSep " " (p: "\"${p.dir}\"") composeProjects})
-    dirs=()
-    if [ "$#" -eq 0 ]; then
-      dirs=("''${all_dirs[@]}")
-    else
-      for name in "$@"; do
-        case "$name" in
-    ${projectCase}
-          *)
-            echo "Unknown project: $name" >&2
-            echo "Known projects: ${projectNames}" >&2
-            exit 1
-            ;;
-        esac
-      done
+    compose() {
+      local stack="$1"; shift
+      (cd "/etc/compose/$stack" && ${docker} compose -p "$stack" "$@")
+    }
+
+    [ "$#" -ge 1 ] || usage
+    action="$1"; shift
+
+    if [ "$action" = "logs" ]; then
+      [ "$#" -ge 1 ] || usage
+      check "$1"
+      stack="$1"; shift
+      compose "$stack" logs --tail=100 -f "$@"
+      exit
     fi
 
-    for dir in "''${dirs[@]}"; do
-      echo "==> $action: $dir"
+    stacks=("$@")
+    [ "''${#stacks[@]}" -gt 0 ] || stacks=("''${known[@]}")
+    for s in "''${stacks[@]}"; do check "$s"; done
+
+    for s in "''${stacks[@]}"; do
+      echo "==> $action: $s"
       case "$action" in
-        status)
-          (cd "$dir" && ${pkgs.docker}/bin/docker compose ps)
-          ;;
-        update)
-          (cd "$dir" && ${pkgs.docker}/bin/docker compose pull && ${pkgs.docker}/bin/docker compose up -d --remove-orphans)
-          ;;
-        up)
-          (cd "$dir" && ${pkgs.docker}/bin/docker compose up -d --remove-orphans)
-          ;;
-        down)
-          (cd "$dir" && ${pkgs.docker}/bin/docker compose down)
-          ;;
-        restart)
-          (cd "$dir" && ${pkgs.docker}/bin/docker compose restart)
-          ;;
-        logs)
-          (cd "$dir" && ${pkgs.docker}/bin/docker compose logs --tail=100 -f)
-          ;;
-        *)
-          usage
-          ;;
+        status)  compose "$s" ps ;;
+        update)  compose "$s" pull && compose "$s" up -d --remove-orphans ;;
+        # go through systemd so `systemctl status <stack>` stays truthful
+        up)      systemctl start "$s" ;;
+        down)    systemctl stop "$s" ;;
+        restart) systemctl restart "$s" ;;
+        *)       usage ;;
       esac
       echo
     done
 
     if [ "$action" = "update" ]; then
       echo "==> Pruning old images"
-      ${pkgs.docker}/bin/docker image prune -f
+      ${docker} image prune -f
     fi
   '';
 in
 {
-  virtualisation.docker.enable = true;
   environment.systemPackages = [
     dockerStack
     pkgs.docker
