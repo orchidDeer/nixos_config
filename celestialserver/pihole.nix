@@ -50,5 +50,20 @@
   services.pihole-web = {
     enable = true;
     ports = [ "3254" ];
+    # Sets webserver.domain. Without a password, FTL only answers requests
+    # for its own names, so this must match the Caddy vhost.
+    hostName = "pihole.localdeer";
+  };
+
+  # Refresh blocklists weekly. Re-runs the module's setup service, which
+  # re-adds the declared lists and runs `pihole -g`.
+  systemd.timers.pihole-gravity = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "weekly";
+      Persistent = true;
+      RandomizedDelaySec = "1h";
+      Unit = "pihole-ftl-setup.service";
+    };
   };
 }

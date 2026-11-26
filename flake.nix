@@ -57,7 +57,6 @@
 
       nixosConfigurations.celestialserver = mkHost "celestialserver" [
         (final: prev: {
-          pihole-ftl = (stableFor prev).pihole-ftl;
           open-webui =
             (import nixpkgs-stable {
               system = prev.stdenv.hostPlatform.system;
